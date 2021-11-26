@@ -26,7 +26,7 @@ def app():
   
   total_energy = total_energy.groupby('Date', group_keys=False).apply(lambda df: df.sample(1))
   print(total_energy)
-  return render_template('average_demand_template.html', title = 'Average Demand', data = total_energy)
+  return render_template('average_demand.html', title = 'Average Demand', data = total_energy, times = total_energy["Date"], values = total_energy["Average Demand"])
 
 
 
