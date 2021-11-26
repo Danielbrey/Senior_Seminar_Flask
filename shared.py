@@ -11,6 +11,7 @@ def get_energy_dataframe():
   df_list = []
   for curr_year_folder in folders:
     file_name = data_dir + '/' + curr_year_folder + '/' + curr_year_folder + '.csv'
+    #print(file_name)
     df = pd.read_csv(file_name)
     df_list.append(df)
 

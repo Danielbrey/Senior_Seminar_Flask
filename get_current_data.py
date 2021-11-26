@@ -5,8 +5,8 @@ import pandas as pd
 import io
 import re
 
-def get_url(curr_day, curr_month, curr_year):
-  return "https://observatory.middlebury.edu/campus/energy/archive/{}{}{}-campus.csv".format(curr_year, curr_month, curr_day)
+def get_url(curr_day, curr_month, curr_year, location = 'campus'):
+  return "https://observatory.middlebury.edu/campus/energy/archive/{}{}{}-{}.csv".format(curr_year, curr_month, curr_day, location)
 
 def string_filter(df):
   datetimes_as_strings = df.iloc[:,0]
@@ -17,8 +17,12 @@ def string_filter(df):
   
   return df[minutes_filter]
   
-def load_day_data(curr_day, curr_month = "", curr_year = ""):
-  url = get_url(curr_day, curr_month, curr_year)  
+def load_day_data(curr_day, curr_month = "", curr_year = "", location = None):
+  if(location):
+    url = get_url(curr_day, curr_month, curr_year, location)
+  else:
+    url = get_url(curr_day, curr_month, curr_year)
+    
   data = requests.get(url).content
   
   df = pd.read_csv(io.StringIO(data.decode('utf-8')),skiprows=1)
@@ -45,3 +49,16 @@ def get_metrics_data():
 
 
   return (todays_usage, day_diff, int(this_week_usage / 7), week_diff)
+
+
+
+def get_todays_data(location = None):
+  curr_time = datetime.now()
+  # Metric for past day
+  if(location):
+    today = load_day_data(curr_time.day, curr_time.month, curr_time.year, location)
+  else:
+    print('check')
+    today = load_day_data(curr_time.day, curr_time.month, curr_time.year)
+  
+  return today
