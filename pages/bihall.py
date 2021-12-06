@@ -9,7 +9,7 @@ def app():
   #print('test')
   total_energy = pd.read_csv('all-mbh.csv')
   print(total_energy)
-  
+  print("1")
 
   datetimes_as_strings = total_energy["datetime"]
   #print(type(datetimes_as_strings))
@@ -24,8 +24,10 @@ def app():
   #print(len(total_energy['Date'].unique().tolist())) 
   days_filter = datetimes_day.astype('int')%15 == 0
   total_energy = total_energy[days_filter]
-  print(total_energy)
+  #print(total_energy)
+  print("2")
   
   total_energy = total_energy.groupby('Date', group_keys=False).apply(lambda df: df.sample(1))
-  print(total_energy)
+  print("3")
+  #print(total_energy)
   return render_template('average_demand.html', title = 'Bihall', data = total_energy, times = total_energy["Date"], values = total_energy["power"])
